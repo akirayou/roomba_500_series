@@ -80,15 +80,15 @@ int main(int argc, char** argv)
 	double vel_x, vel_y, vel_yaw;
 	double dt;
 
-	ros::NodeHandle n;
+	ros::NodeHandle n("~");
 	
 	n.param<std::string>("roomba/port", port, "/dev/ttyUSB0");
 	
 	roomba = new irobot::OpenInterface(port.c_str());
 	
-	ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("/odom", 50);
+	ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 50);
 	tf::TransformBroadcaster odom_broadcaster;
-	ros::Subscriber cmd_vel_sub  = n.subscribe<geometry_msgs::Twist>("/cmd_vel", 1, cmdVelReceived);
+	ros::Subscriber cmd_vel_sub  = n.subscribe<geometry_msgs::Twist>("cmd_vel", 1, cmdVelReceived);
 	//ros::Subscriber drive_sub  = n.subscribe<geometry_msgs::Twist>("/drive", 1, driveReceived);
 
 

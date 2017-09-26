@@ -117,7 +117,7 @@ int main(int argc, char** argv)
 	float last_charge = 0.0;
 	int time_remaining = -1;
 	
-	ros::NodeHandle n;
+	//ros::NodeHandle n;
 	ros::NodeHandle pn("~");
 	
 	pn.param<std::string>("port", port, "/dev/ttyUSB0");
@@ -129,22 +129,22 @@ int main(int argc, char** argv)
 	
 	roomba = new irobot::OpenInterface(port.c_str());
 
-	ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("/odom", 50);
-	ros::Publisher battery_pub = n.advertise<roomba_500_series::Battery>("/battery", 50);
-	ros::Publisher bumper_pub = n.advertise<roomba_500_series::Bumper>("/bumper", 50);
-	ros::Publisher buttons_pub = n.advertise<roomba_500_series::Buttons>("/buttons", 50);
-	ros::Publisher cliff_pub = n.advertise<roomba_500_series::RoombaIR>("/cliff", 50);
-	ros::Publisher irbumper_pub = n.advertise<roomba_500_series::RoombaIR>("/ir_bumper", 50);
-	ros::Publisher irchar_pub = n.advertise<roomba_500_series::IRCharacter>("/ir_character", 50);
-	ros::Publisher wheeldrop_pub = n.advertise<roomba_500_series::WheelDrop>("/wheel_drop", 50);
+	ros::Publisher odom_pub = pn.advertise<nav_msgs::Odometry>("odom", 50);
+	ros::Publisher battery_pub = pn.advertise<roomba_500_series::Battery>("battery", 50);
+	ros::Publisher bumper_pub = pn.advertise<roomba_500_series::Bumper>("bumper", 50);
+	ros::Publisher buttons_pub = pn.advertise<roomba_500_series::Buttons>("buttons", 50);
+	ros::Publisher cliff_pub = pn.advertise<roomba_500_series::RoombaIR>("cliff", 50);
+	ros::Publisher irbumper_pub = pn.advertise<roomba_500_series::RoombaIR>("ir_bumper", 50);
+	ros::Publisher irchar_pub = pn.advertise<roomba_500_series::IRCharacter>("ir_character", 50);
+	ros::Publisher wheeldrop_pub = pn.advertise<roomba_500_series::WheelDrop>("wheel_drop", 50);
 
 	tf::TransformBroadcaster tf_broadcaster;
 	
-	ros::Subscriber cmd_vel_sub  = n.subscribe<geometry_msgs::Twist>("/cmd_vel", 1, cmdVelReceived);
-	ros::Subscriber leds_sub  = n.subscribe<roomba_500_series::Leds>("/leds", 1, ledsReceived);
-	ros::Subscriber digitleds_sub  = n.subscribe<roomba_500_series::DigitLeds>("/digit_leds", 1, digitLedsReceived);
-	ros::Subscriber song_sub  = n.subscribe<roomba_500_series::Song>("/song", 1, songReceived);
-	ros::Subscriber playsong_sub  = n.subscribe<roomba_500_series::PlaySong>("/play_song", 1, playSongReceived);
+	ros::Subscriber cmd_vel_sub  = pn.subscribe<geometry_msgs::Twist>("cmd_vel", 1, cmdVelReceived);
+	ros::Subscriber leds_sub  = pn.subscribe<roomba_500_series::Leds>("leds", 1, ledsReceived);
+	ros::Subscriber digitleds_sub  = pn.subscribe<roomba_500_series::DigitLeds>("digit_leds", 1, digitLedsReceived);
+	ros::Subscriber song_sub  = pn.subscribe<roomba_500_series::Song>("song", 1, songReceived);
+	ros::Subscriber playsong_sub  = pn.subscribe<roomba_500_series::PlaySong>("play_song", 1, playSongReceived);
 	
 	irobot::OI_Packet_ID sensor_packets[1] = {irobot::OI_PACKET_GROUP_100};
 	roomba->setSensorPackets(sensor_packets, 1, OI_PACKET_GROUP_100_SIZE);
@@ -163,7 +163,7 @@ int main(int argc, char** argv)
 	last_time = ros::Time::now();
 
 	ros::Rate r(10.0);
-	while(n.ok())
+	while(pn.ok())
 	{
 		current_time = ros::Time::now();
 		
